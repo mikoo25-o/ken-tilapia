@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ken Tilapia – Fresh Tilapia, Migori Kenya</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+  :root {
+    --navy:  #0d2340;
+    --ocean: #1a6b8a;
+    --sky:   #5fb3cc;
+    --sand:  #f5f0e8;
+    --orange:#e07b2a;
+    --white: #ffffff;
+    --border:#d0dce5;
+    --text:  #111827;
+    --mid:   #374151;
+    --light: #6b7280;
+    --bg:    #f9f7f4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);}
+
+  /* ── TOP BAR ── */
+  .topbar{
+    background:var(--navy);color:#c8d8e8;font-size:12.5px;
+    padding:6px 40px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:6px;
+  }
+  .topbar a{color:#c8d8e8;text-decoration:none;}
+  .topbar span{display:inline-flex;align-items:center;gap:5px;}
+  .tb-right{display:flex;gap:20px;}
+
+  /* ── NAVBAR ── */
+  nav{
+    background:var(--white);border-bottom:2px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 40px;position:sticky;top:0;z-index:200;
+    box-shadow:0 2px 8px rgba(0,0,0,.07);
+  }
+  .nav-logo{display:flex;align-items:center;gap:12px;}
+  .nav-logo img{height:52px;object-fit:contain;}
+  .brand-name{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);font-weight:700;display:block;}
+  .brand-sub{font-size:11px;color:var(--ocean);letter-spacing:.06em;text-transform:uppercase;display:block;}
+  .nav-links{display:flex;gap:26px;list-style:none;align-items:center;}
+  .nav-links a{text-decoration:none;color:var(--mid);font-size:14px;font-weight:600;transition:color .2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--orange);}
+  .nav-links a.active{border-bottom:2px solid var(--orange);padding-bottom:2px;}
+  .nav-actions{display:flex;align-items:center;gap:14px;}
+  .nav-search{
+    border:1px solid var(--border);border-radius:4px;
+    padding:6px 12px;font-size:13px;outline:none;width:170px;
+    font-family:'Source Sans 3',sans-serif;
+  }
+  .nav-search:focus{border-color:var(--ocean);}
+  .nav-icon{background:none;border:none;cursor:pointer;font-size:16px;color:var(--mid);position:relative;}
+  .cart-badge{
+    position:absolute;top:-6px;right:-7px;
+    background:var(--orange);color:#fff;
+    font-size:9px;width:16px;height:16px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+  }
+
+  /* ── HERO ── */
+  .hero{
+    position:relative;height:520px;overflow:hidden;
+  }
+
+  /* Each slide: full-cover background IMAGE */
+  .slide{
+    position:absolute;inset:0;opacity:0;
+    transition:opacity 1.2s ease;
+    display:flex;align-items:center;
+  }
+  .slide.active{opacity:1;z-index:2;}
+
+  .slide-bg{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:cover;
+    z-index:0;
+  }
+
+  /* Dark gradient overlay on the whole slide */
+  .slide-overlay{
+    position:absolute;inset:0;z-index:1;
+    background:linear-gradient(
+      90deg,
+      rgba(13,35,64,0.80) 0%,
+      rgba(13,35,64,0.55) 45%,
+      rgba(13,35,64,0.10) 100%
+    );
+  }
+
+  /* Frosted blur panel sitting BEHIND the text */
+  .hero-glass{
+    position:relative;z-index:3;
+    margin-left:60px;
+    padding:36px 40px;
+    max-width:520px;
+    background:rgba(13,35,64,0.45);
+    backdrop-filter:blur(14px) saturate(1.4);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:8px;
+  }
+  .slide-tag{
+    display:inline-block;
+    background:var(--orange);color:#fff;
+    font-size:11px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;padding:4px 12px;border-radius:3px;
+    margin-bottom:14px;
+  }
+  .hero-glass h1{
+    font-family:'Playfair Display',serif;
+    font-size:36px;color:var(--white);line-height:1.22;margin-bottom:12px;
+  }
+  .hero-glass p{
+    color:#cfe4ef;font-size:14.5px;line-height:1.65;margin-bottom:24px;
+  }
+  .hero-btns{display:flex;gap:12px;align-items:center;}
+  .btn-primary{
+    background:var(--orange);color:#fff;
+    padding:11px 26px;border:none;border-radius:4px;
+    font-size:14px;font-weight:600;cursor:pointer;
+    text-decoration:none;display:inline-block;transition:background .2s;
+  }
+  .btn-primary:hover{background:#c96a1a;}
+  .btn-outline{
+    background:transparent;color:#fff;
+    border:2px solid rgba(255,255,255,.55);
+    padding:11px 20px;border-radius:4px;
+    font-size:14px;font-weight:600;cursor:pointer;
+    text-decoration:none;display:inline-block;transition:border-color .2s;
+  }
+  .btn-outline:hover{border-color:#fff;}
+
+  /* Dots */
+  .slide-dots{
+    position:absolute;bottom:20px;left:50%;
+    transform:translateX(-50%);display:flex;gap:8px;z-index:10;
+  }
+  .dot{
+    width:10px;height:10px;border-radius:50%;
+    background:rgba(255,255,255,.35);cursor:pointer;transition:background .3s;
+  }
+  .dot.active{background:var(--orange);}
+
+  /* ── STATS BAR ── */
+  .stats-bar{
+    background:var(--navy);color:#c8d8e8;
+    display:flex;justify-content:center;
+  }
+  .stat-item{
+    padding:16px 40px;text-align:center;
+    border-right:1px solid rgba(255,255,255,.12);flex:1;
+  }
+  .stat-item:last-child{border-right:none;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:26px;color:var(--sky);font-weight:700;}
+  .stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8aafc8;margin-top:2px;}
+
+  /* ── SECTION HEADERS ── */
+  .sec-label{text-align:center;color:var(--orange);font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
+  .sec-title{text-align:center;font-family:'Playfair Display',serif;font-size:28px;color:var(--navy);margin-bottom:32px;}
+
+  /* ── PRODUCTS ── */
+  .products-section{padding:56px 40px;background:var(--bg);}
+  .products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+  .product-card{
+    background:var(--white);border:1px solid var(--border);border-radius:6px;
+    overflow:hidden;transition:box-shadow .2s,transform .2s;position:relative;
+  }
+  .product-card:hover{box-shadow:0 8px 24px rgba(13,35,64,.12);transform:translateY(-3px);}
+  .badge{
+    position:absolute;top:12px;left:12px;
+    background:var(--orange);color:#fff;
+    font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;z-index:5;
+  }
+  .card-img{height:170px;overflow:hidden;background:#e8f0f5;display:flex;align-items:center;justify-content:center;}
+  .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+  .product-card:hover .card-img img{transform:scale(1.05);}
+  .card-body{padding:14px 16px 16px;}
+  .card-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:4px;}
+  .card-desc{font-size:12.5px;color:var(--light);line-height:1.5;margin-bottom:10px;min-height:36px;}
+  .card-rating{font-size:12px;color:var(--light);margin-bottom:8px;}
+  .card-rating i{color:#f59e0b;}
+  .card-footer{display:flex;align-items:center;justify-content:space-between;}
+  .card-price{font-size:18px;font-weight:700;color:var(--navy);}
+  .card-price span{font-size:11px;color:var(--light);font-weight:400;}
+  .btn-buy{
+    background:var(--navy);color:#fff;border:none;
+    padding:8px 14px;border-radius:4px;font-size:12.5px;font-weight:600;
+    cursor:pointer;display:flex;align-items:center;gap:6px;
+    transition:background .2s;text-decoration:none;
+  }
+  .btn-buy:hover{background:var(--ocean);}
+
+  /* ── ABOUT ── */
+  .about-wrap{background:var(--white);padding:56px 40px;}
+  .about-inner{max-width:1100px;margin:0 auto;display:flex;gap:50px;align-items:center;}
+  .about-img{flex:1;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+  .about-img img{width:100%;height:320px;object-fit:cover;display:block;}
+  .about-text{flex:1;}
+  .about-text h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--navy);margin-bottom:14px;}
+  .about-text p{font-size:14.5px;color:var(--mid);line-height:1.75;margin-bottom:12px;}
+  .pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+  .pill{border:1px solid var(--ocean);color:var(--ocean);padding:5px 14px;border-radius:20px;font-size:12.5px;font-weight:600;}
+
+  /* ── HOW TO ORDER ── */
+  .steps-section{background:var(--navy);padding:56px 40px;text-align:center;}
+  .steps-section .sec-label{color:var(--sky);}
+  .steps-section .sec-title{color:var(--white);}
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1000px;margin:0 auto;}
+  .step{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:28px 18px;color:#c8d8e8;}
+  .step-num{font-family:'Playfair Display',serif;font-size:36px;color:var(--orange);margin-bottom:10px;}
+  .step h4{color:var(--white);font-size:15px;margin-bottom:8px;}
+  .step p{font-size:13px;line-height:1.6;}
+
+  /* ── ORDER FORM ── */
+  .form-section{padding:56px 40px;background:var(--bg);}
+  .form-wrap{max-width:680px;margin:0 auto;background:var(--white);border:1px solid var(--border);border-radius:6px;padding:36px 40px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+  label{font-size:13px;font-weight:600;color:var(--text);}
+  input,select,textarea{
+    border:1px solid var(--border);border-radius:4px;padding:10px 12px;
+    font-size:14px;font-family:'Source Sans 3',sans-serif;
+    outline:none;transition:border-color .2s;color:var(--text);background:var(--white);
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--ocean);}
+  textarea{resize:vertical;min-height:90px;}
+  .btn-submit{
+    background:var(--orange);color:#fff;border:none;
+    padding:13px 32px;border-radius:4px;font-size:15px;font-weight:700;
+    cursor:pointer;width:100%;transition:background .2s;letter-spacing:.02em;
+  }
+  .btn-submit:hover{background:#c96a1a;}
+  .success-msg{
+    display:none;background:#d1fae5;border:1px solid #6ee7b7;
+    color:#065f46;padding:14px 18px;border-radius:4px;font-size:14px;margin-top:14px;text-align:center;
+  }
+
+  /* ── FOOTER ── */
+  footer{background:var(--navy);color:#8aafc8;padding:48px 40px 24px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:40px;max-width:1100px;margin:0 auto 40px;}
+  .footer-brand img{height:52px;margin-bottom:12px;filter:brightness(2);}
+  .footer-brand p{font-size:13px;line-height:1.7;margin-bottom:16px;}
+  .socials{display:flex;gap:12px;}
+  .socials a{
+    width:36px;height:36px;border:1px solid rgba(255,255,255,.2);border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    color:#c8d8e8;font-size:15px;text-decoration:none;transition:background .2s,border-color .2s;
+  }
+  .socials a:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.4);}
+  .socials a.fb:hover{color:#1877f2;}
+  .socials a.wa:hover{color:#25d366;}
+  .socials a.yt:hover{color:#ff0000;}
+  .footer-col h4{color:var(--white);font-size:14px;font-weight:700;margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase;}
+  .footer-col ul{list-style:none;}
+  .footer-col ul li{margin-bottom:8px;}
+  .footer-col ul li a{color:#8aafc8;text-decoration:none;font-size:13.5px;transition:color .2s;}
+  .footer-col ul li a:hover{color:var(--white);}
+  .contact-line{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin-bottom:10px;}
+  .contact-line i{color:var(--sky);margin-top:3px;flex-shrink:0;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;text-align:center;font-size:12.5px;max-width:1100px;margin:0 auto;}
+
+  /* WhatsApp float */
+  .wa-float{
+    position:fixed;bottom:28px;right:28px;z-index:999;
+    background:#25d366;color:#fff;width:52px;height:52px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:24px;
+    text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.3);transition:transform .2s;
+  }
+  .wa-float:hover{transform:scale(1.1);}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div style="display:flex;gap:20px;flex-wrap:wrap;">
+    <span><i class="fa fa-phone"></i> <a href="tel:+254700000000">+254 700 000 000</a></span>
+    <span><i class="fa fa-envelope"></i> <a href="mailto:info@kentilapia.co.ke">info@kentilapia.co.ke</a></span>
+  </div>
+  <div class="tb-right">
+    <span><i class="fa fa-map-marker-alt"></i> Rabuor Village, Migori County, Kenya</span>
+    <span><i class="fa fa-clock"></i> Order Before 2 PM for Same-Day Dispatch</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <img src="logo.png" alt="Ken Tilapia Logo"/>
+    <div>
+      <span class="brand-name">Ken Tilapia</span>
+      <span class="brand-sub">Fresh Tilapia · Migori, Kenya</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#order">Order Now</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <input class="nav-search" type="text" placeholder="Search fish, sizes…"/>
+    <button class="nav-icon"><i class="fa fa-heart"></i></button>
+    <button class="nav-icon" style="position:relative;">
+      <i class="fa fa-shopping-cart"></i>
+      <span class="cart-badge" id="cartCount">0</span>
+    </button>
+    <button class="nav-icon"><i class="fa fa-user-circle"></i></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+
+  <!-- SLIDE 1 -->
+  <div class="slide active">
+    <img class="slide-bg" src="hero-1.png" alt="Fresh Tilapia"/>
+    <div class="slide-overlay"></div>
+    <div class="hero-glass">
+      <span class="slide-tag">Farm Fresh · Daily Harvest</span>
+      <h1>Freshest Tilapia<br/>from Lake Victoria</h1>
+      <p>Farm-raised in Rabuor, Migori. Harvested daily and delivered fresh to your doorstep across Kenya.</p>
+      <div class="hero-btns">
+        <a href="#products" class="btn-primary">Shop Now</a>
+        <a href="#order" class="btn-outline">Place Order &nbsp;<i class="fa fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide">
+    <img class="slide-bg" src="hero-2.png" alt="Fish Farm"/>
+    <div class="slide-overlay"></div>
+    <div class="hero-glass">
+      <span class="slide-tag">30+ Cages · 20+ Ponds</span>
+      <h1>A Farm Changing<br/>Rabuor Village</h1>
+      <p>Chinese aquaculture expertise meets Kenyan community — over 100 local employees, sustainable ponds, and world-class fish cages.</p>
+      <div class="hero-btns">
+        <a href="#about" class="btn-primary">Our Farm</a>
+        <a href="#order" class="btn-outline">Order Now &nbsp;<i class="fa fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide">
+    <img class="slide-bg" src="hero-3.png" alt="Tilapia Harvest"/>
+    <div class="slide-overlay"></div>
+    <div class="hero-glass">
+      <span class="slide-tag">KSh 310 / kg · All Sizes</span>
+      <h1>Premium Tilapia<br/>Four Sizes Available</h1>
+      <p>From small everyday portions to extra-large whole fish — all at a single flat price of KSh 310 per kilogram.</p>
+      <div class="hero-btns">
+        <a href="#order" class="btn-primary">Order Today</a>
+        <a href="#products" class="btn-outline">View Sizes &nbsp;<i class="fa fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-dots">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Fish Cages</div></div>
+  <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Fish Ponds</div></div>
+  <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Employees</div></div>
+  <div class="stat-item"><div class="stat-num">KSh 310</div><div class="stat-label">Per Kilogram</div></div>
+  <div class="stat-item"><div class="stat-num">Daily</div><div class="stat-label">Fresh Harvest</div></div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+  <div class="sec-label">Our Products</div>
+  <div class="sec-title">Fresh Tilapia — Most Loved by Our Customers</div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="badge">Size 1</div>
+      <div class="card-img"><img src="hero-1.png" alt="Tilapia Size 1"/></div>
+      <div class="card-body">
+        <div class="card-title">Tilapia – Size 1</div>
+        <div class="card-desc">Small whole tilapia. Ideal for individual portions, frying, and quick meals.</div>
+        <div class="card-rating"><i class="fa fa-star"></i> 4.8 &nbsp;·&nbsp; Small (200–350g)</div>
+        <div class="card-footer">
+          <div class="card-price">KSh 310 <span>/ kg</span></div>
+          <a href="#order" class="btn-buy"><i class="fa fa-shopping-cart"></i> Buy Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="badge">Size 2</div>
+      <div class="card-img"><img src="hero-1.png" alt="Tilapia Size 2"/></div>
+      <div class="card-body">
+        <div class="card-title">Tilapia – Size 2</div>
+        <div class="card-desc">Medium tilapia — best for family meals, grilling, or stewing.</div>
+        <div class="card-rating"><i class="fa fa-star"></i> 4.9 &nbsp;·&nbsp; Medium (350–550g)</div>
+        <div class="card-footer">
+          <div class="card-price">KSh 310 <span>/ kg</span></div>
+          <a href="#order" class="btn-buy"><i class="fa fa-shopping-cart"></i> Buy Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="badge">Size 3</div>
+      <div class="card-img"><img src="hero-1.png" alt="Tilapia Size 3"/></div>
+      <div class="card-body">
+        <div class="card-title">Tilapia – Size 3</div>
+        <div class="card-desc">Large tilapia for restaurants, hotels, and special occasions.</div>
+        <div class="card-rating"><i class="fa fa-star"></i> 4.9 &nbsp;·&nbsp; Large (550–800g)</div>
+        <div class="card-footer">
+          <div class="card-price">KSh 310 <span>/ kg</span></div>
+          <a href="#order" class="btn-buy"><i class="fa fa-shopping-cart"></i> Buy Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="badge">Size 4</div>
+      <div class="card-img"><img src="hero-2.png" alt="Tilapia Size 4"/></div>
+      <div class="card-body">
+        <div class="card-title">Tilapia – Size 4</div>
+        <div class="card-desc">Extra-large premium tilapia. Perfect for bulk buyers and big events.</div>
+        <div class="card-rating"><i class="fa fa-star"></i> 4.8 &nbsp;·&nbsp; XL (800g+)</div>
+        <div class="card-footer">
+          <div class="card-price">KSh 310 <span>/ kg</span></div>
+          <a href="#order" class="btn-buy"><i class="fa fa-shopping-cart"></i> Buy Now</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="about-wrap" id="about">
+  <div class="sec-label">Who We Are</div>
+  <div class="sec-title">Creating Change in Rabuor, Migori County</div>
+  <div class="about-inner">
+    <div class="about-img"><img src="hero-2.png" alt="Ken Tilapia Farm"/></div>
+    <div class="about-text">
+      <h2>A Chinese-Kenyan Aquaculture Partnership</h2>
+      <p>Ken Tilapia is a large-scale tilapia aquaculture operation located in Rabuor Village, Migori County, Kenya — on the shores of Lake Victoria. We combine Chinese aquaculture technology with Kenyan community expertise.</p>
+      <p>With over <strong>30 fish cages</strong>, <strong>20 fish ponds</strong>, and a growing team of <strong>100+ employees</strong>, we are transforming livelihoods in Rabuor Village and contributing to Migori County's economy.</p>
+      <p>All our tilapia is responsibly farmed, harvested fresh daily, and available in four size grades at a flat price of <strong>KSh 310 per kilogram</strong>.</p>
+      <div class="pills">
+        <span class="pill">Farm Raised</span>
+        <span class="pill">Daily Harvest</span>
+        <span class="pill">Lake Victoria</span>
+        <span class="pill">100+ Jobs</span>
+        <span class="pill">Migori County</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW TO ORDER -->
+<section class="steps-section">
+  <div class="sec-label">Simple Process</div>
+  <div class="sec-title">How to Place Your Order</div>
+  <div class="steps-grid">
+    <div class="step"><div class="step-num">01</div><h4>Choose Your Size</h4><p>Pick Size 1, 2, 3, or 4. All at KSh 310/kg flat rate.</p></div>
+    <div class="step"><div class="step-num">02</div><h4>Fill the Form</h4><p>Enter your name, location, size, and quantity below.</p></div>
+    <div class="step"><div class="step-num">03</div><h4>WhatsApp Confirm</h4><p>We confirm your order and delivery details via WhatsApp.</p></div>
+    <div class="step"><div class="step-num">04</div><h4>Fresh Delivered</h4><p>Same-day dispatch for orders before 2 PM. Cold-packed.</p></div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section class="form-section" id="order">
+  <div class="sec-label">Place an Order</div>
+  <div class="sec-title">Order Fresh Tilapia Today</div>
+  <div class="form-wrap">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fname" placeholder="e.g. John Ochieng"/>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="fphone" placeholder="+254 7XX XXX XXX"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Select Size</label>
+        <select id="fsize">
+          <option value="">-- Choose Size --</option>
+          <option>Size 1 – Small (200–350g) @ KSh 310/kg</option>
+          <option>Size 2 – Medium (350–550g) @ KSh 310/kg</option>
+          <option>Size 3 – Large (550–800g) @ KSh 310/kg</option>
+          <option>Size 4 – XL (800g+) @ KSh 310/kg</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Quantity (kg)</label>
+        <input type="number" id="fqty" placeholder="e.g. 5" min="1"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Delivery Location</label>
+      <input type="text" id="floc" placeholder="Town / Area / Address"/>
+    </div>
+    <div class="form-group">
+      <label>Additional Notes (optional)</label>
+      <textarea id="fnote" placeholder="Any special instructions, e.g. delivery time preferences…"></textarea>
+    </div>
+    <button class="btn-submit" onclick="submitOrder()">
+      <i class="fa fa-paper-plane"></i> &nbsp; Place Order
+    </button>
+    <div class="success-msg" id="successMsg">
+      <i class="fa fa-check-circle"></i> &nbsp; Thank you! Your order has been received. We will contact you via WhatsApp shortly.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.png" alt="Ken Tilapia Logo"/>
+      <p>Ken Tilapia is a leading tilapia aquaculture company in Rabuor Village, Migori County, Kenya. Freshness, sustainability, and community are at the heart of everything we do.</p>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank" class="fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/254700000000" target="_blank" class="wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://youtube.com" target="_blank" class="yt" title="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Shop</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#order">Place an Order</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Our Products</h4>
+      <ul>
+        <li><a href="#order">Tilapia Size 1 – Small</a></li>
+        <li><a href="#order">Tilapia Size 2 – Medium</a></li>
+        <li><a href="#order">Tilapia Size 3 – Large</a></li>
+        <li><a href="#order">Tilapia Size 4 – XL</a></li>
+        <li><a href="#order">Bulk / Wholesale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <div class="contact-line"><i class="fa fa-map-marker-alt"></i><span>Rabuor Village, Migori County, Kenya</span></div>
+      <div class="contact-line"><i class="fa fa-phone"></i><span>+254 700 000 000</span></div>
+      <div class="contact-line"><i class="fa fa-envelope"></i><span>info@kentilapia.co.ke</span></div>
+      <div class="contact-line"><i class="fab fa-whatsapp"></i><span>WhatsApp: +254 700 000 000</span></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Ken Tilapia. All rights reserved. &nbsp;|&nbsp; Rabuor Village, Migori County, Kenya</p>
+  </div>
+</footer>
+
+<!-- WhatsApp float -->
+<a class="wa-float" href="https://wa.me/254700000000" target="_blank" title="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+  // ── SLIDER ──
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.dot');
+  let current  = 0, timer;
+
+  function goSlide(n){
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  function nextSlide(){ goSlide(current + 1); }
+  function startTimer(){ clearInterval(timer); timer = setInterval(nextSlide, 3000); }
+  startTimer();
+
+  // ── CART COUNT ──
+  let cartTotal = 0;
+  document.querySelectorAll('.btn-buy').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      cartTotal++;
+      document.getElementById('cartCount').textContent = cartTotal;
+    });
+  });
+
+  // ── ORDER SUBMIT ──
+  function submitOrder(){
+    const name  = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const size  = document.getElementById('fsize').value;
+    const qty   = document.getElementById('fqty').value.trim();
+    const loc   = document.getElementById('floc').value.trim();
+    if(!name||!phone||!size||!qty||!loc){ alert('Please fill in all required fields.'); return; }
+    document.getElementById('successMsg').style.display = 'block';
+    const msg = encodeURIComponent(
+      `*New Order – Ken Tilapia*\n\nName: ${name}\nPhone: ${phone}\nSize: ${size}\nQty: ${qty} kg\nLocation: ${loc}\nTotal: KSh ${310*parseInt(qty)}`
+    );
+    setTimeout(() => window.open(`https://wa.me/254700000000?text=${msg}`,'_blank'), 800);
+  }
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+    });
+  });
+</script>
+</body>
+</html>
